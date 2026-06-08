@@ -30,7 +30,10 @@ Next.js (App Router) + TypeScript + Tailwind + Supabase (`@supabase/ssr`). Resen
       - DB types `src/lib/supabase/database.types.ts` wired into the clients (`<Database>` generic).
       - Applied via `scripts/apply-migration.mjs` over the IPv4 Session Pooler (direct `db.<ref>` host is IPv6-only and times out here). Verified with `scripts/verify-rls.mjs`: ALL CHECKS PASSED — B cannot read/update/delete A's private rows via direct REST; anon sees only public; auto-handles unique.
       - DB connection bits live in gitignored `.env.local` (`SUPABASE_DB_PASSWORD/HOST/USER`). `pg` added as a devDependency for migrations.
-- [ ] Phase 3 — Bookmarks CRUD UI + server actions.
+- [x] Phase 3 — Bookmarks CRUD UI + server actions.
+      - Actions `src/lib/actions/bookmarks.ts`: create/update/delete/setVisibility. Each re-checks `getUser()`, validates title + normalizes URL (forces http(s), requires a dotted host), and filters writes by `.eq("user_id", user.id)` on top of RLS. `revalidatePath("/dashboard")`.
+      - UI: `AddBookmarkForm` (useActionState, resets on success), `BookmarkRow` (inline edit via useTransition, public/private badge, make public/private toggle, delete). Dashboard lists own bookmarks newest-first + links to public profile by handle.
+      - Verified: typecheck/lint/build green; `/dashboard` compiles and guards. Full browser click-through pending (offered).
 - [ ] Phase 4 — Public profile page `/[handle]` showing only public bookmarks.
 - [ ] Phase 5 — Resend welcome email on signup.
 - [ ] Phase 6 — Deploy to Vercel, set env vars, test live URL.
