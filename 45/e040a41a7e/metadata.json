@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "45e040a41a7e",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "BUILD_PLAN.md",
+    "src/app/auth/confirm/route.ts",
+    "src/lib/actions/auth.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/45/e040a41a7e/0/metadata.json",
+      "transcript": "/45/e040a41a7e/0/full.jsonl",
+      "content_hash": "/45/e040a41a7e/0/content_hash.txt",
+      "prompt": "/45/e040a41a7e/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 296,
+    "cache_creation_tokens": 27949,
+    "cache_read_tokens": 3855714,
+    "output_tokens": 24144,
+    "api_call_count": 19
+  }
+}

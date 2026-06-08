@@ -1,0 +1,17 @@
+ok do that verify but before that for singup email what should i do still it is missig?
+
+---
+
+hey inhave done the signup template actually and what is the next thing to do
+
+---
+
+ok check it in local and i already have deployed in live
+
+---
+
+ok do it https://eagerminds-bookmarks.vercel.app/ check everything whether everythink works perfect as we have in thr worfkolw
+
+---
+
+hey i am checkig when the welcome email should send...actually when i first signupped the confirm email sent then when i open verify email address it goes to the localhost 3000 and also the welcome email also already sent is this correct how it works

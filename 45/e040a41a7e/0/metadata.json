@@ -1,0 +1,84 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "45e040a41a7e",
+  "session_id": "eb3e9a24-5b5b-4fcb-99f7-10c2c1deb708",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-08T02:15:59.82612Z",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "src/lib/actions/auth.ts",
+    "src/app/auth/confirm/route.ts",
+    "BUILD_PLAN.md"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-8[1m]",
+  "turn_id": "11ff1f93d16e",
+  "checkpoint_transcript_start": 759,
+  "transcript_lines_at_start": 759,
+  "token_usage": {
+    "input_tokens": 296,
+    "cache_creation_tokens": 27949,
+    "cache_read_tokens": 3855714,
+    "output_tokens": 24144,
+    "api_call_count": 19
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "claude-skill-toolu_01HqJGeVXzTgdHMWxY5SCFjG",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "verify"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "11ff1f93d16e",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 765,
+        "end": 766,
+        "entry_ids": [
+          "4ff488a2-7b88-4733-a411-ca1418e7c903"
+        ],
+        "tool_use_id": "toolu_01HqJGeVXzTgdHMWxY5SCFjG"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01HqJGeVXzTgdHMWxY5SCFjG"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: verify",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 15
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-08T02:15:59.798902Z",
+    "agent_lines": 14,
+    "agent_removed": 9,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 14,
+    "total_lines_changed": 23,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}
