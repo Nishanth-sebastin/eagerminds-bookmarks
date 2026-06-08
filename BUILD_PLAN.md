@@ -24,8 +24,12 @@ Next.js (App Router) + TypeScript + Tailwind + Supabase (`@supabase/ssr`). Resen
       - Auth: server actions `login`/`signup`/`signOut` (`src/lib/actions/auth.ts`); pages `/login`, `/signup` (shared `AuthForm` client component), protected `/dashboard` (re-checks auth itself, not just proxy), email-confirm handler `/auth/confirm`.
       - User created the Supabase project; keys are in `.env.local` (gitignored). Verified end-to-end: admin create + password login both 200; test users cleaned up.
       - NOTE Next 16: `middleware` → `proxy` (nodejs runtime); `cookies()` is async; page `searchParams` is a Promise.
-      - DECISION NEEDED (email confirm is currently ON in Supabase): either (a) disable "Confirm email" in Supabase Auth so signup lands straight on `/dashboard`, OR (b) point the "Confirm signup" template link at `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=signup`. Until then, signup shows "check your email".
-- [ ] Phase 2b — DB schema + **RLS policies** (the security core). `profiles` (handle unique), `bookmarks` (user_id FK, is_public).
+      - DECISION (made): keep email confirmation ON — option (b). User to set the Supabase "Confirm signup" email template link to `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=signup` (handler `/auth/confirm` already built). Signup shows "check your email" until confirmed.
+- [~] Phase 2b — DB schema + **RLS policies** (the security core). `profiles` (handle unique), `bookmarks` (user_id FK, is_public).
+      - SQL written: `supabase/migrations/20260608063513_init_schema_rls.sql` (tables, RLS on both, owner-only write policies keyed on `auth.uid()`, public-read for `is_public`, profiles readable by all, `updated_at` trigger, auto-profile trigger giving every new user a unique handle).
+      - DB types: `src/lib/supabase/database.types.ts`, wired into the Supabase clients (`<Database>` generic).
+      - Verifier: `scripts/verify-rls.mjs` exercises every policy by hitting REST directly as user B against user A's rows; cleans up test users.
+      - PENDING: no CLI/psql/connection string locally → migration must be APPLIED (paste into Supabase SQL Editor, or give me the DB connection string). Then run `node scripts/verify-rls.mjs`.
 - [ ] Phase 3 — Bookmarks CRUD UI + server actions.
 - [ ] Phase 4 — Public profile page `/[handle]` showing only public bookmarks.
 - [ ] Phase 5 — Resend welcome email on signup.
