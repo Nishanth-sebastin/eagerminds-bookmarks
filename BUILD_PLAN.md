@@ -18,7 +18,7 @@ Next.js (App Router) + TypeScript + Tailwind + Supabase (`@supabase/ssr`). Resen
 ## Status
 - [x] Phase 0 — Entire CLI installed, logged in, hooks installed, `entire/checkpoints/v1` pushing to GitHub (verified).
 - [x] GitHub repo created: https://github.com/Nishanth-sebastin/eagerminds-bookmarks (public, remote `origin`, branch `main`).
-- [ ] Phase 1 — Scaffold Next.js + TS + Tailwind app. First real commit.
+- [x] Phase 1 — Scaffold Next.js + TS + Tailwind app. First real commit. (Next.js 16.2.7, React 19, Tailwind 4, App Router, `src/` dir, `@/*` alias. Turbopack root pinned in `next.config.ts`. Build + lint green.)
 - [ ] Phase 2 — Supabase project (user creates) → wire auth (signup/login/logout) + middleware-protected `/dashboard`.
 - [ ] Phase 2b — DB schema + **RLS policies** (the security core). `profiles` (handle unique), `bookmarks` (user_id FK, is_public).
 - [ ] Phase 3 — Bookmarks CRUD UI + server actions.
