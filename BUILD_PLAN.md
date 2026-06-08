@@ -25,11 +25,11 @@ Next.js (App Router) + TypeScript + Tailwind + Supabase (`@supabase/ssr`). Resen
       - User created the Supabase project; keys are in `.env.local` (gitignored). Verified end-to-end: admin create + password login both 200; test users cleaned up.
       - NOTE Next 16: `middleware` → `proxy` (nodejs runtime); `cookies()` is async; page `searchParams` is a Promise.
       - DECISION (made): keep email confirmation ON — option (b). User to set the Supabase "Confirm signup" email template link to `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=signup` (handler `/auth/confirm` already built). Signup shows "check your email" until confirmed.
-- [~] Phase 2b — DB schema + **RLS policies** (the security core). `profiles` (handle unique), `bookmarks` (user_id FK, is_public).
-      - SQL written: `supabase/migrations/20260608063513_init_schema_rls.sql` (tables, RLS on both, owner-only write policies keyed on `auth.uid()`, public-read for `is_public`, profiles readable by all, `updated_at` trigger, auto-profile trigger giving every new user a unique handle).
-      - DB types: `src/lib/supabase/database.types.ts`, wired into the Supabase clients (`<Database>` generic).
-      - Verifier: `scripts/verify-rls.mjs` exercises every policy by hitting REST directly as user B against user A's rows; cleans up test users.
-      - PENDING: no CLI/psql/connection string locally → migration must be APPLIED (paste into Supabase SQL Editor, or give me the DB connection string). Then run `node scripts/verify-rls.mjs`.
+- [x] Phase 2b — DB schema + **RLS policies** (the security core). APPLIED & VERIFIED against the live DB.
+      - `supabase/migrations/20260608063513_init_schema_rls.sql`: tables, RLS on both, owner-only write keyed on `auth.uid()`, public-read for `is_public`, profiles readable by all, `updated_at` trigger, auto-profile trigger (unique handle per new user).
+      - DB types `src/lib/supabase/database.types.ts` wired into the clients (`<Database>` generic).
+      - Applied via `scripts/apply-migration.mjs` over the IPv4 Session Pooler (direct `db.<ref>` host is IPv6-only and times out here). Verified with `scripts/verify-rls.mjs`: ALL CHECKS PASSED — B cannot read/update/delete A's private rows via direct REST; anon sees only public; auto-handles unique.
+      - DB connection bits live in gitignored `.env.local` (`SUPABASE_DB_PASSWORD/HOST/USER`). `pg` added as a devDependency for migrations.
 - [ ] Phase 3 — Bookmarks CRUD UI + server actions.
 - [ ] Phase 4 — Public profile page `/[handle]` showing only public bookmarks.
 - [ ] Phase 5 — Resend welcome email on signup.
@@ -37,11 +37,11 @@ Next.js (App Router) + TypeScript + Tailwind + Supabase (`@supabase/ssr`). Resen
 - [ ] Phase 7 — README (run locally / where agent went wrong / one improvement).
 
 ## Security checklist (must verify, not assume)
-- RLS enabled on `bookmarks` and `profiles`; policies key off `auth.uid()`.
-- Public profile query filters `is_public = true` server-side.
-- Handle uniqueness = DB `UNIQUE` constraint (not app-level check — race condition).
-- Service-role key server-only; never shipped to browser. `.env*` gitignored.
-- Test privacy by hitting the API directly as user B against user A's rows.
+- [x] RLS enabled on `bookmarks` and `profiles`; policies key off `auth.uid()`. (verified by scripts/verify-rls.mjs)
+- [ ] Public profile query filters `is_public = true` server-side. (RLS enforces it; explicit server filter lands with the /[handle] page in Phase 4)
+- [x] Handle uniqueness = DB `UNIQUE` constraint (not app-level check — race condition). (profiles.handle UNIQUE)
+- [x] Service-role key server-only; never shipped to browser. `.env*` gitignored. (only NEXT_PUBLIC_* reach the client)
+- [x] Test privacy by hitting the API directly as user B against user A's rows. (scripts/verify-rls.mjs — ALL PASSED)
 
 ## Accounts the user (Nishanth) still needs to create
 - Supabase project → grab `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`.
