@@ -1,0 +1,1 @@
+Read BUILD_PLAN.md and start Phase 1 — scaffold the Next.js app.
