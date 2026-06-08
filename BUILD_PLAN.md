@@ -19,10 +19,12 @@ Next.js (App Router) + TypeScript + Tailwind + Supabase (`@supabase/ssr`). Resen
 - [x] Phase 0 — Entire CLI installed, logged in, hooks installed, `entire/checkpoints/v1` pushing to GitHub (verified).
 - [x] GitHub repo created: https://github.com/Nishanth-sebastin/eagerminds-bookmarks (public, remote `origin`, branch `main`).
 - [x] Phase 1 — Scaffold Next.js + TS + Tailwind app. First real commit. (Next.js 16.2.7, React 19, Tailwind 4, App Router, `src/` dir, `@/*` alias. Turbopack root pinned in `next.config.ts`. Build + lint green.)
-- [~] Phase 2 — Supabase project (user creates) → wire auth (signup/login/logout) + middleware-protected `/dashboard`.
-      - SSR plumbing DONE (ahead of keys): `@supabase/ssr` installed; browser client (`src/lib/supabase/client.ts`), server client (`src/lib/supabase/server.ts`), session-refresh helper + `/dashboard` guard (`src/lib/supabase/proxy.ts`), root `src/proxy.ts`. `.env.example` added.
-      - NOTE: Next 16 renamed `middleware` → `proxy` (export `proxy`, nodejs runtime). `cookies()` is async (`await cookies()`).
-      - BLOCKED on user: create Supabase project + drop keys into `.env.local`. Then build login/signup UI + server actions and the `/dashboard` + `/login` pages.
+- [x] Phase 2 — Supabase auth wired + middleware-protected `/dashboard`. DONE & verified against the live project.
+      - SSR clients: browser (`src/lib/supabase/client.ts`), server (`src/lib/supabase/server.ts`), session-refresh + `/dashboard` guard (`src/lib/supabase/proxy.ts`), root `src/proxy.ts`. Graceful no-op when unconfigured (`src/lib/supabase/env.ts`).
+      - Auth: server actions `login`/`signup`/`signOut` (`src/lib/actions/auth.ts`); pages `/login`, `/signup` (shared `AuthForm` client component), protected `/dashboard` (re-checks auth itself, not just proxy), email-confirm handler `/auth/confirm`.
+      - User created the Supabase project; keys are in `.env.local` (gitignored). Verified end-to-end: admin create + password login both 200; test users cleaned up.
+      - NOTE Next 16: `middleware` → `proxy` (nodejs runtime); `cookies()` is async; page `searchParams` is a Promise.
+      - DECISION NEEDED (email confirm is currently ON in Supabase): either (a) disable "Confirm email" in Supabase Auth so signup lands straight on `/dashboard`, OR (b) point the "Confirm signup" template link at `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=signup`. Until then, signup shows "check your email".
 - [ ] Phase 2b — DB schema + **RLS policies** (the security core). `profiles` (handle unique), `bookmarks` (user_id FK, is_public).
 - [ ] Phase 3 — Bookmarks CRUD UI + server actions.
 - [ ] Phase 4 — Public profile page `/[handle]` showing only public bookmarks.

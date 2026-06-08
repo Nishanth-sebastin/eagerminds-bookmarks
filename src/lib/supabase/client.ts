@@ -1,4 +1,5 @@
 import { createBrowserClient } from "@supabase/ssr";
+import { SUPABASE_ANON_KEY, SUPABASE_URL } from "./env";
 
 /**
  * Supabase client for use in Client Components (browser).
@@ -6,8 +7,5 @@ import { createBrowserClient } from "@supabase/ssr";
  * the browser because every table is guarded by Row Level Security.
  */
 export function createClient() {
-  return createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-  );
+  return createBrowserClient(SUPABASE_URL!, SUPABASE_ANON_KEY!);
 }
