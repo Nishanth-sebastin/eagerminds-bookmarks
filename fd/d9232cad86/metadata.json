@@ -1,0 +1,29 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "fdd9232cad86",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "BUILD_PLAN.md",
+    "src/app/dashboard/page.tsx",
+    "src/components/add-bookmark-form.tsx",
+    "src/components/bookmark-row.tsx",
+    "src/lib/actions/bookmarks.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/fd/d9232cad86/0/metadata.json",
+      "transcript": "/fd/d9232cad86/0/full.jsonl",
+      "content_hash": "/fd/d9232cad86/0/content_hash.txt",
+      "prompt": "/fd/d9232cad86/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 284,
+    "cache_creation_tokens": 15259,
+    "cache_read_tokens": 1922335,
+    "output_tokens": 14493,
+    "api_call_count": 13
+  }
+}
