@@ -1,0 +1,43 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "fe621fef064f",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "src/app/[handle]/page.tsx",
+    "src/app/auth/confirm/page.tsx",
+    "src/app/dashboard/page.tsx",
+    "src/app/globals.css",
+    "src/app/layout.tsx",
+    "src/app/login/page.tsx",
+    "src/app/page.tsx",
+    "src/app/signup/page.tsx",
+    "src/components/add-bookmark-form.tsx",
+    "src/components/auth-form.tsx",
+    "src/components/bookmark-row.tsx",
+    "src/components/brand.tsx",
+    "src/components/confirm-email.tsx",
+    "src/components/mode-toggle.tsx",
+    "src/components/sign-out-button.tsx",
+    "src/components/site-header.tsx",
+    "src/components/theme-provider.tsx",
+    "src/lib/actions/auth.ts",
+    "src/lib/actions/bookmarks.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/fe/621fef064f/0/metadata.json",
+      "transcript": "/fe/621fef064f/0/full.jsonl",
+      "content_hash": "/fe/621fef064f/0/content_hash.txt",
+      "prompt": "/fe/621fef064f/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 1630,
+    "cache_creation_tokens": 81597,
+    "cache_read_tokens": 19339328,
+    "output_tokens": 59253,
+    "api_call_count": 74
+  }
+}

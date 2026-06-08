@@ -1,0 +1,13 @@
+i got this issue Blocked form submission to '' because the form's frame is sandboxed and the 'allow-forms' permission is not set.
+dashboard:1 Blocked form submission to '' because the form's frame is sandboxed and the 'allow-forms' permission is not set.
+dashboard:1 Blocked form submission to '' because the form's frame is sandboxed and the 'allow-forms' permission is not set.
+dashboard:1 Blocked form submission to '' because the form's frame is sandboxed and the 'allow-forms' permission is not set.
+dashboard:1 Blocked form submission to '' because the form's frame is sandboxed and the 'allow-forms' permission is not set.
+dashboard:1 Blocked form submission to '' because the form's frame is sandboxed and the 'allow-forms' permission is not set.
+dashboard:1 Blocked form submission to '' because the form's frame is sandboxed and the 'allow-forms' permission is not set.
+dashboard:1 Blocked form submission to '' because the form's frame is sandboxed and the 'allow-forms' permission is not set.
+dashboard:1  and can you please make the ui for better...the login  and singup looks okay but put the theme swithc darj and light on top and then after singup show likek check the email inbox like that to give the visual i dont see any visual indiciaiot saying that check the mail after clicking the mail confirm.it is displauibg the loading long time instead sho the page like confirming email and then after confiramtiuoin show the go to dashboard gutton there lke thata nd in that dashboard make the ui look better please with neat and clean professional sass like app neat and clean and the public profile page also...i want this app to be like modern linktree please do it
+
+---
+
+use shadcn if you want
