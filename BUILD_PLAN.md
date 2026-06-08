@@ -41,8 +41,11 @@ Next.js (App Router) + TypeScript + Tailwind + Supabase (`@supabase/ssr`). Resen
       - `src/lib/email.ts`: `sendWelcomeEmail(to)` via Resend SDK, config-guarded (no-op without `RESEND_API_KEY`), errors logged not thrown. Wired into the signup action AFTER a successful `signUp`, wrapped in try/catch so a mail failure never blocks signup.
       - Resend account has a VERIFIED domain `eshppapp.shop` → switched `EMAIL_FROM` to `Bookmarks <bookmarks@eshppapp.shop>` so mail delivers to any recipient (not just the account owner). `.env.example` updated to explain verified-domain vs onboarding@resend.dev.
       - Verified: live send to courses@cartrabbit.in returned 200 + message id.
-- [ ] Phase 6 — Deploy to Vercel, set env vars, test live URL.
-- [ ] Phase 7 — README (run locally / where agent went wrong / one improvement).
+- [~] Phase 6 — Deploy to Vercel. PREPARED — actual deploy needs your Vercel account (no CLI/auth locally).
+      - `DEPLOY.md`: import-repo steps, the exact 4 runtime env vars (service-role + DB creds intentionally excluded — no runtime code uses them), post-deploy Supabase Site URL / redirect URL config + email template, and a live smoke-test checklist. Production build verified green.
+      - TODO (you): import repo at vercel.com/new, paste env vars, deploy, then set Supabase URL config to the Vercel domain.
+- [x] Phase 7 — README (run locally / where agent went wrong / one improvement). DONE.
+      - Full README: features, security model (RLS + how it's tested), local setup, env var table, layout, an honest "where the AI agent went wrong" section, and one improvement (UI to claim/edit your @handle).
 
 ## Security checklist (must verify, not assume)
 - [x] RLS enabled on `bookmarks` and `profiles`; policies key off `auth.uid()`. (verified by scripts/verify-rls.mjs)
