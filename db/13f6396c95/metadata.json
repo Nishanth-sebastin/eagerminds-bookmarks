@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "db13f6396c95",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    ".env.example",
+    "BUILD_PLAN.md",
+    "src/lib/actions/auth.ts",
+    "src/lib/email.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/db/13f6396c95/0/metadata.json",
+      "transcript": "/db/13f6396c95/0/full.jsonl",
+      "content_hash": "/db/13f6396c95/0/content_hash.txt",
+      "prompt": "/db/13f6396c95/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 284,
+    "cache_creation_tokens": 8691,
+    "cache_read_tokens": 2211125,
+    "output_tokens": 7962,
+    "api_call_count": 13
+  }
+}
