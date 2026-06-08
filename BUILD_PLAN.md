@@ -34,14 +34,16 @@ Next.js (App Router) + TypeScript + Tailwind + Supabase (`@supabase/ssr`). Resen
       - Actions `src/lib/actions/bookmarks.ts`: create/update/delete/setVisibility. Each re-checks `getUser()`, validates title + normalizes URL (forces http(s), requires a dotted host), and filters writes by `.eq("user_id", user.id)` on top of RLS. `revalidatePath("/dashboard")`.
       - UI: `AddBookmarkForm` (useActionState, resets on success), `BookmarkRow` (inline edit via useTransition, public/private badge, make public/private toggle, delete). Dashboard lists own bookmarks newest-first + links to public profile by handle.
       - Verified: typecheck/lint/build green; `/dashboard` compiles and guards. Full browser click-through pending (offered).
-- [ ] Phase 4 — Public profile page `/[handle]` showing only public bookmarks.
+- [x] Phase 4 — Public profile page `/[handle]` showing only public bookmarks. DONE & verified end-to-end.
+      - `src/app/[handle]/page.tsx`: resolves profile by lowercased handle (anon client), `notFound()` if missing, lists bookmarks filtered `user_id = profile.id AND is_public = true` (explicit server filter + RLS). `generateMetadata` sets `@handle` title. Static routes (/login, /dashboard, /auth) take precedence over the dynamic segment.
+      - Verified against live DB: a user's PUBLIC bookmark renders at /<handle>, the PRIVATE one does NOT leak, unknown handle → 404.
 - [ ] Phase 5 — Resend welcome email on signup.
 - [ ] Phase 6 — Deploy to Vercel, set env vars, test live URL.
 - [ ] Phase 7 — README (run locally / where agent went wrong / one improvement).
 
 ## Security checklist (must verify, not assume)
 - [x] RLS enabled on `bookmarks` and `profiles`; policies key off `auth.uid()`. (verified by scripts/verify-rls.mjs)
-- [ ] Public profile query filters `is_public = true` server-side. (RLS enforces it; explicit server filter lands with the /[handle] page in Phase 4)
+- [x] Public profile query filters `is_public = true` server-side. (explicit `.eq("is_public", true)` in /[handle] + RLS; verified private rows don't leak)
 - [x] Handle uniqueness = DB `UNIQUE` constraint (not app-level check — race condition). (profiles.handle UNIQUE)
 - [x] Service-role key server-only; never shipped to browser. `.env*` gitignored. (only NEXT_PUBLIC_* reach the client)
 - [x] Test privacy by hitting the API directly as user B against user A's rows. (scripts/verify-rls.mjs — ALL PASSED)
