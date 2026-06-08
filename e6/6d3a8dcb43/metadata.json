@@ -1,0 +1,30 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "e66d3a8dcb43",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "BUILD_PLAN.md",
+    "scripts/verify-rls.mjs",
+    "src/lib/supabase/client.ts",
+    "src/lib/supabase/database.types.ts",
+    "src/lib/supabase/server.ts",
+    "supabase/migrations/20260608063513_init_schema_rls.sql"
+  ],
+  "sessions": [
+    {
+      "metadata": "/e6/6d3a8dcb43/0/metadata.json",
+      "transcript": "/e6/6d3a8dcb43/0/full.jsonl",
+      "content_hash": "/e6/6d3a8dcb43/0/content_hash.txt",
+      "prompt": "/e6/6d3a8dcb43/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 286,
+    "cache_creation_tokens": 19185,
+    "cache_read_tokens": 1624951,
+    "output_tokens": 18465,
+    "api_call_count": 14
+  }
+}
