@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
+import { sendWelcomeEmail } from "@/lib/email";
 
 export type AuthState = { error?: string; message?: string };
 
@@ -57,6 +58,13 @@ export async function signup(
 
   if (error) {
     return { error: error.message };
+  }
+
+  // Best-effort welcome email — never let a mail failure break signup.
+  try {
+    await sendWelcomeEmail(email);
+  } catch (e) {
+    console.error("sendWelcomeEmail threw:", e);
   }
 
   // If the project has email confirmation enabled, there's no session yet —
