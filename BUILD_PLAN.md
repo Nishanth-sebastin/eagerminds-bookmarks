@@ -38,7 +38,7 @@ Next.js (App Router) + TypeScript + Tailwind + Supabase (`@supabase/ssr`). Resen
       - `src/app/[handle]/page.tsx`: resolves profile by lowercased handle (anon client), `notFound()` if missing, lists bookmarks filtered `user_id = profile.id AND is_public = true` (explicit server filter + RLS). `generateMetadata` sets `@handle` title. Static routes (/login, /dashboard, /auth) take precedence over the dynamic segment.
       - Verified against live DB: a user's PUBLIC bookmark renders at /<handle>, the PRIVATE one does NOT leak, unknown handle → 404.
 - [x] Phase 5 — Resend welcome email on signup. DONE & verified (live send).
-      - `src/lib/email.ts`: `sendWelcomeEmail(to)` via Resend SDK, config-guarded (no-op without `RESEND_API_KEY`), errors logged not thrown. Wired into the signup action AFTER a successful `signUp`, wrapped in try/catch so a mail failure never blocks signup.
+      - `src/lib/email.ts`: `sendWelcomeEmail(to)` via Resend SDK, config-guarded (no-op without `RESEND_API_KEY`), errors logged not thrown. Sent from `/auth/confirm` AFTER the address is verified (type === "signup" only), so abandoned/unconfirmed signups don't get a welcome. (Moved out of the signup action per user preference.)
       - Resend account has a VERIFIED domain `eshppapp.shop` → switched `EMAIL_FROM` to `Bookmarks <bookmarks@eshppapp.shop>` so mail delivers to any recipient (not just the account owner). `.env.example` updated to explain verified-domain vs onboarding@resend.dev.
       - Verified: live send to courses@cartrabbit.in returned 200 + message id.
 - [~] Phase 6 — Deploy to Vercel. PREPARED — actual deploy needs your Vercel account (no CLI/auth locally).
