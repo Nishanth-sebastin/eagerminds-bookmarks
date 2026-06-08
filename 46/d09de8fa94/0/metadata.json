@@ -1,0 +1,54 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "46d09de8fa94",
+  "session_id": "eb3e9a24-5b5b-4fcb-99f7-10c2c1deb708",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-08T00:14:03.794213Z",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    ".gitignore",
+    ".env.example",
+    "src/lib/supabase/client.ts",
+    "src/lib/supabase/server.ts",
+    "src/lib/supabase/proxy.ts",
+    "src/proxy.ts",
+    "BUILD_PLAN.md"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-8[1m]",
+  "turn_id": "6b2d981aa602",
+  "checkpoint_transcript_start": 113,
+  "transcript_lines_at_start": 113,
+  "token_usage": {
+    "input_tokens": 421,
+    "cache_creation_tokens": 25162,
+    "cache_read_tokens": 896197,
+    "output_tokens": 8166,
+    "api_call_count": 17
+  },
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-08T00:14:03.786204Z",
+    "agent_lines": 139,
+    "agent_removed": 1,
+    "human_added": 122,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 261,
+    "total_lines_changed": 262,
+    "agent_percentage": 53.43511450381679,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}
