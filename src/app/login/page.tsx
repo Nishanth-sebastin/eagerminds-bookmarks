@@ -1,4 +1,5 @@
 import { AuthForm } from "@/components/auth-form";
+import { SiteHeader } from "@/components/site-header";
 import { login, type AuthState } from "@/lib/actions/auth";
 
 export default async function LoginPage({
@@ -8,5 +9,12 @@ export default async function LoginPage({
 }) {
   const { error, message } = await searchParams;
   const initialState: AuthState = { error, message };
-  return <AuthForm mode="login" action={login} initialState={initialState} />;
+  return (
+    <>
+      <SiteHeader />
+      <main className="flex flex-1 items-center justify-center px-4 py-12">
+        <AuthForm mode="login" action={login} initialState={initialState} />
+      </main>
+    </>
+  );
 }

@@ -1,18 +1,30 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ArrowUpRight } from "lucide-react";
+import { Brand } from "@/components/brand";
+import { ModeToggle } from "@/components/mode-toggle";
+import { buttonVariants } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 
 type Params = { handle: string };
 
+function hostFromUrl(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return url;
+  }
+}
+
 async function getProfile(handleParam: string) {
   if (!isSupabaseConfigured()) return null;
-  const handle = handleParam.toLowerCase();
   const supabase = await createClient();
   const { data } = await supabase
     .from("profiles")
     .select("id, handle")
-    .eq("handle", handle)
+    .eq("handle", handleParam.toLowerCase())
     .maybeSingle();
   return data;
 }
@@ -42,9 +54,8 @@ export default async function PublicProfilePage({
     notFound();
   }
 
-  // Public view: anon client + RLS already returns only public rows, but we
-  // ALSO filter is_public = true explicitly here so visibility never depends
-  // on a single layer. (Security checklist: filter is_public server-side.)
+  // Public view: explicit is_public filter on top of RLS so visibility never
+  // depends on a single layer.
   const supabase = await createClient();
   const { data: bookmarks } = await supabase
     .from("bookmarks")
@@ -56,45 +67,65 @@ export default async function PublicProfilePage({
   const list = bookmarks ?? [];
 
   return (
-    <div className="flex flex-1 flex-col items-center bg-zinc-50 px-6 py-16 dark:bg-black">
-      <main className="w-full max-w-xl">
-        <header className="mb-8 text-center">
-          <h1 className="text-3xl font-semibold tracking-tight text-black dark:text-zinc-50">
+    <div className="flex min-h-dvh flex-col">
+      <header className="flex h-14 items-center justify-between px-4 sm:px-6">
+        <Brand />
+        <ModeToggle />
+      </header>
+
+      <main className="mx-auto flex w-full max-w-md flex-1 flex-col px-4 py-10">
+        <div className="flex flex-col items-center text-center">
+          <div className="flex size-20 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary/60 text-3xl font-semibold text-primary-foreground">
+            {profile.handle[0]?.toUpperCase()}
+          </div>
+          <h1 className="mt-4 text-2xl font-semibold tracking-tight">
             @{profile.handle}
           </h1>
-          <p className="mt-1 text-sm text-zinc-500">
-            {list.length} public {list.length === 1 ? "bookmark" : "bookmarks"}
+          <p className="mt-1 text-sm text-muted-foreground">
+            {list.length} public {list.length === 1 ? "link" : "links"}
           </p>
-        </header>
+        </div>
 
         {list.length === 0 ? (
-          <p className="py-10 text-center text-sm text-zinc-500">
-            No public bookmarks yet.
+          <p className="mt-12 text-center text-sm text-muted-foreground">
+            No public links yet.
           </p>
         ) : (
-          <ul className="space-y-3">
+          <ul className="mt-8 space-y-3">
             {list.map((bookmark) => (
-              <li
-                key={bookmark.id}
-                className="rounded-lg border border-black/[.08] bg-white p-4 dark:border-white/[.145] dark:bg-zinc-950"
-              >
+              <li key={bookmark.id}>
                 <a
                   href={bookmark.url}
                   target="_blank"
                   rel="noopener noreferrer nofollow"
-                  className="block"
+                  className="group flex items-center gap-3 rounded-xl border border-border bg-card p-4 transition-all hover:border-primary/40 hover:shadow-sm"
                 >
-                  <span className="block font-medium text-black hover:underline dark:text-zinc-50">
-                    {bookmark.title}
+                  <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-muted text-sm font-semibold text-muted-foreground">
+                    {hostFromUrl(bookmark.url)[0]?.toUpperCase() ?? "?"}
                   </span>
-                  <span className="mt-0.5 block truncate text-sm text-zinc-500">
-                    {bookmark.url}
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate font-medium">
+                      {bookmark.title}
+                    </span>
+                    <span className="block truncate text-sm text-muted-foreground">
+                      {hostFromUrl(bookmark.url)}
+                    </span>
                   </span>
+                  <ArrowUpRight className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </a>
               </li>
             ))}
           </ul>
         )}
+
+        <div className="mt-auto pt-12 text-center">
+          <Link
+            href="/signup"
+            className={buttonVariants({ variant: "ghost", size: "sm" })}
+          >
+            Create your own profile →
+          </Link>
+        </div>
       </main>
     </div>
   );

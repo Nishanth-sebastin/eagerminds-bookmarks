@@ -1,9 +1,11 @@
 "use server";
 
+import type { EmailOtpType } from "@supabase/supabase-js";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
+import { sendWelcomeEmail } from "@/lib/email";
 
 export type AuthState = { error?: string; message?: string };
 
@@ -80,4 +82,37 @@ export async function signOut() {
   await supabase.auth.signOut();
   revalidatePath("/", "layout");
   redirect("/login");
+}
+
+export type ConfirmResult = { ok?: boolean; error?: string };
+
+/**
+ * Exchanges an email confirmation token for a session (sets auth cookies) and,
+ * for the initial signup, sends the welcome email. Called from the confirm
+ * page's client component so the UI can show progress instead of a blank wait.
+ */
+export async function confirmEmail(
+  tokenHash: string,
+  type: EmailOtpType,
+): Promise<ConfirmResult> {
+  if (!isSupabaseConfigured()) return { error: NOT_CONFIGURED };
+  if (!tokenHash || !type) return { error: "This confirmation link is invalid." };
+
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.verifyOtp({
+    type,
+    token_hash: tokenHash,
+  });
+  if (error) return { error: error.message };
+
+  if (type === "signup" && data.user?.email) {
+    try {
+      await sendWelcomeEmail(data.user.email);
+    } catch (e) {
+      console.error("sendWelcomeEmail threw:", e);
+    }
+  }
+
+  revalidatePath("/", "layout");
+  return { ok: true };
 }

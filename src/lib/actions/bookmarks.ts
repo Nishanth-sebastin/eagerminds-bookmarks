@@ -84,41 +84,45 @@ export async function updateBookmark(
   return { ok: true };
 }
 
-export async function deleteBookmark(formData: FormData): Promise<void> {
+export async function deleteBookmark(id: string): Promise<BookmarkState> {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return;
+  if (!user) return { error: "Your session expired. Please log in again." };
+  if (!id) return { error: "Missing bookmark id." };
 
-  const id = String(formData.get("id") ?? "");
-  if (!id) return;
-
-  await supabase
+  const { error } = await supabase
     .from("bookmarks")
     .delete()
     .eq("id", id)
     .eq("user_id", user.id);
 
+  if (error) return { error: error.message };
+
   revalidatePath("/dashboard");
+  return { ok: true };
 }
 
-export async function setBookmarkVisibility(formData: FormData): Promise<void> {
+export async function setBookmarkVisibility(
+  id: string,
+  is_public: boolean,
+): Promise<BookmarkState> {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return;
+  if (!user) return { error: "Your session expired. Please log in again." };
+  if (!id) return { error: "Missing bookmark id." };
 
-  const id = String(formData.get("id") ?? "");
-  const is_public = formData.get("is_public") === "true";
-  if (!id) return;
-
-  await supabase
+  const { error } = await supabase
     .from("bookmarks")
     .update({ is_public })
     .eq("id", id)
     .eq("user_id", user.id);
 
+  if (error) return { error: error.message };
+
   revalidatePath("/dashboard");
+  return { ok: true };
 }

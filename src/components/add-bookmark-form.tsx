@@ -1,65 +1,76 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { useActionState } from "react";
-import { createBookmark, type BookmarkState } from "@/lib/actions/bookmarks";
-
-const inputClass =
-  "w-full rounded-md border border-black/[.12] bg-transparent px-3 py-2 text-sm text-black outline-none focus:border-black dark:border-white/[.18] dark:text-zinc-50 dark:focus:border-white";
+import { useRef, useState, useTransition } from "react";
+import { Plus } from "lucide-react";
+import { toast } from "sonner";
+import { createBookmark } from "@/lib/actions/bookmarks";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 
 export function AddBookmarkForm() {
-  const [state, formAction, pending] = useActionState<BookmarkState, FormData>(
-    createBookmark,
-    {},
-  );
   const formRef = useRef<HTMLFormElement>(null);
+  const [isPublic, setIsPublic] = useState(false);
+  const [pending, startTransition] = useTransition();
 
-  // Clear the form after a successful add.
-  useEffect(() => {
-    if (state.ok) formRef.current?.reset();
-  }, [state]);
+  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    // Handle the submit on the client so we never rely on a native form POST.
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    formData.set("is_public", isPublic ? "on" : "");
+
+    startTransition(async () => {
+      const result = await createBookmark({}, formData);
+      if (result.error) {
+        toast.error(result.error);
+      } else {
+        toast.success("Bookmark added");
+        formRef.current?.reset();
+        setIsPublic(false);
+      }
+    });
+  }
 
   return (
-    <form
-      ref={formRef}
-      action={formAction}
-      className="space-y-3 rounded-xl border border-black/[.08] bg-white p-5 dark:border-white/[.145] dark:bg-zinc-950"
-    >
-      <div className="grid gap-3 sm:grid-cols-[1fr_1fr_auto] sm:items-center">
-        <input
-          name="title"
-          type="text"
-          required
-          maxLength={200}
-          placeholder="Title"
-          aria-label="Title"
-          className={inputClass}
-        />
-        <input
-          name="url"
-          type="text"
-          required
-          placeholder="example.com"
-          aria-label="URL"
-          className={inputClass}
-        />
-        <button
-          type="submit"
-          disabled={pending}
-          className="rounded-md bg-black px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-800 disabled:opacity-60 dark:bg-white dark:text-black dark:hover:bg-zinc-200"
-        >
-          {pending ? "Adding…" : "Add"}
-        </button>
-      </div>
-
-      <label className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400">
-        <input name="is_public" type="checkbox" className="h-4 w-4" />
-        Make this bookmark public (visible on your profile)
-      </label>
-
-      {state.error ? (
-        <p className="text-sm text-red-600 dark:text-red-400">{state.error}</p>
-      ) : null}
-    </form>
+    <Card>
+      <CardContent>
+        <form ref={formRef} onSubmit={onSubmit} className="space-y-4">
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="space-y-2">
+              <Label htmlFor="title">Title</Label>
+              <Input
+                id="title"
+                name="title"
+                placeholder="My favorite article"
+                required
+                maxLength={200}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="url">URL</Label>
+              <Input id="url" name="url" placeholder="example.com/post" required />
+            </div>
+          </div>
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-2">
+              <Switch
+                id="is_public"
+                checked={isPublic}
+                onCheckedChange={setIsPublic}
+              />
+              <Label htmlFor="is_public" className="text-muted-foreground">
+                Public — show on my profile
+              </Label>
+            </div>
+            <Button type="submit" disabled={pending}>
+              <Plus className="size-4" />
+              {pending ? "Adding…" : "Add bookmark"}
+            </Button>
+          </div>
+        </form>
+      </CardContent>
+    </Card>
   );
 }
